@@ -6,7 +6,11 @@
 </head>
 <body>
     <h1>Форма регистрации пользователя</h1>
+        {% block content %}
+            <h1>{{ error }}</h1>
+        {% endblock %}
     <form method="post">
+        {{info}}
         {% csrf_token %}
         <label for="username">Введите логин: </label>
         <input type="text" id="username" name="username" maxlength="30" required>
@@ -22,6 +26,7 @@
 
         <button type="submit">Отправить</button>
     </form>
+    {{ info }}
 </body>
 </html>
 

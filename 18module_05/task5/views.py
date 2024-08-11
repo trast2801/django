@@ -2,6 +2,20 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 # Create your views here.
+def control(username, pass_, pass_ret, age,users):
+    info = {}
+    if username in users:
+        info = "Пользователь уже существует"
+        return  info
+    elif pass_ != pass_ret:
+        info = "Пароли не совпадают"
+        return  info
+    elif age < 18:
+        info = "Вы должны быть старше 18"
+        return  info
+
+    info =  f'Приветствуем {username}'
+    return  info
 
 def index(request):
     return render(request, 'index.html')
@@ -14,16 +28,9 @@ def sign_up_by_html(request):
         pass_ = request.POST.get('pass_')
         pass_ret = request.POST.get('pass_ret')
         age = int(request.POST.get('age'))
-        if username in users:
-            info = {"error": "Пользователь уже существует"}
-            return HttpResponse(f'{info}!')
-        elif pass_ != pass_ret:
-            info = {"error": "Пароли не совпадают"}
-            return HttpResponse(f'{info}!')
-        elif age < 18:
-            info = {"error": "Вы должны быть старше 18"}
-            return HttpResponse(f'{info}!')
-        return HttpResponse(f'Приветствуем {username}')
+        str = control(username, pass_, pass_ret, age, users)
+        info = {"error": str}
+        return render(request, 'registration_page.html',info)
     info = {}
     return render(request, 'registration_page.html', info)
 
@@ -38,17 +45,10 @@ def sign_up_by_django(request):
             username = form.cleaned_data['username']
             pass_ = form.cleaned_data['pass_']
             pass_ret = form.cleaned_data['pass_ret']
-            age = form.cleaned_data['age']
-        if username in users:
-            info = {"error": "Пользователь уже существует"}
-            return HttpResponse(f'{info}!')
-        elif pass_ != pass_ret:
-            info = {"error": "Пароли не совпадают"}
-            return HttpResponse(f'{info}!')
-        elif int(age) < 18:
-            info = {"error": "Вы должны быть старше 18"}
-            return HttpResponse(f'{info}!')
-        return HttpResponse(f'Приветствуем {username}')
+            age = int(form.cleaned_data['age'])
+            str = control(username, pass_, pass_ret, age, users)
+            info = {"error": str}
+            return render(request, 'registration_page.html', info)
     else:
         form = ContactForm()
     return render(request,'registration_page.html', {'form': form} )
