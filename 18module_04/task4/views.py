@@ -17,7 +17,11 @@ def index(request):
 def shop(request):
     shop = " Магазин "
     menu_shop = ' Футболки '
-    catalog = ['Футболка с начесом', 'Футболка с принтом', 'Футболка обычная']
+    catalog_dict = {'T-shirt': ['Футболка с начесом', 'Футболка с принтом', 'Футболка обычная']}
+    catalog = []
+    for key, value in catalog_dict.items():
+        for j in value:
+            catalog.append(j)
     context = {
         'shop': shop,
         'menu_shop': menu_shop,
