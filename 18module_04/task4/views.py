@@ -22,12 +22,24 @@ def shop(request):
     for key, value in catalog_dict.items():
         for j in value:
             catalog.append(j)
+
     context = {
         'shop': shop,
         'menu_shop': menu_shop,
         'catalog':  catalog
     }
     return render(request, 'shop.html', context)
+
+def shop_dict(request):
+    shop = " Магазин "
+    menu_shop = ' Футболки '
+
+    context = {
+        'shop': shop,
+        'menu_shop': menu_shop,
+        'shirt': ['Футболка с начесом', 'Футболка с принтом', 'Футболка обычная']
+    }
+    return render(request, 'shop_dict.html', context)
 
 def basket(request):
     return render(request, 'basket.html')
